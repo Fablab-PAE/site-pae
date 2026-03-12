@@ -114,7 +114,7 @@
       if (currentIdx < shortsData.length - 1) { currentIdx++; updateCarousel(true); }
     });
 
-    updateCarousel(true);
+    updateCarousel(false);
   }
 
   if (document.readyState === 'loading') {
