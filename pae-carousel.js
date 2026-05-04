@@ -5,15 +5,9 @@
     track.dataset.init = '1';
 
     var shortsData = [
-      { role: 'Ebénisterie', name: 'Atelier Bois 1',  ytId: 'VLJTsOoH7t0' },
-      { role: 'Ebénisterie', name: 'Atelier Bois 2',  ytId: 'yJFL8gjg1qs' },
-      { role: 'Ebénisterie', name: 'Atelier Bois 3',  ytId: 'ZvnZmLAq9Rg' },
-      { role: 'Art Recup',   name: 'Creation 1',      ytId: 'Ie9KhCyvek8' },
-      { role: 'Art Recup',   name: 'Creation 2',      ytId: '8KdkLhVvWl4' },
-      { role: 'Art Recup',   name: 'Creation 3',      ytId: 'MXAUKMyzt2w' },
-      { role: 'Robotique',   name: 'Prototype 1',     ytId: 'bO0e9Jprp-E' },
-      { role: 'Robotique',   name: 'Prototype 2',     ytId: 'W7yA8htsZao' },
-      { role: 'Robotique',   name: 'Prototype 3',     ytId: 'nC3_nCjNcRI' }
+      { role: 'Art Recup',      ytId: 'Ie9KhCyvek8' },
+      { role: 'Ebénisterie',      ytId: '8KdkLhVvWl4' },
+      { role: 'Robotique',      ytId: 'MXAUKMyzt2w' }
     ];
 
     var dotsEl     = document.getElementById('pae-dots');
