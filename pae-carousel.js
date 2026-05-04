@@ -4,11 +4,14 @@
     if (!track || track.dataset.init) return;
     track.dataset.init = '1';
 
+    // ─── VIDEOS ───────────────────────────────────────────────
+    // Replace the placeholder URLs below when the new videos are ready.
     var shortsData = [
-      { role: 'Art Recup',   ytId: 'Ie9KhCyvek8' },
-      { role: 'Ebénisterie', ytId: '8KdkLhVvWl4' },
-      { role: 'Robotique',   ytId: 'MXAUKMyzt2w' }
+      { role: 'Art Recup',   src: 'https://placealemploi.ca/wp-content/uploads/2026/04/sashiko.mp4' },
+      { role: 'Ebénisterie', src: 'https://placealemploi.ca/wp-content/uploads/2026/04/sashiko.mp4' }, // TODO: remplacer par la vidéo Ébénisterie
+      { role: 'Robotique',   src: 'https://placealemploi.ca/wp-content/uploads/2026/04/sashiko.mp4' }  // TODO: remplacer par la vidéo Robotique
     ];
+    // ──────────────────────────────────────────────────────────
 
     var dotsEl     = document.getElementById('pae-dots');
     var currentIdx = Math.floor(shortsData.length / 2);
@@ -19,7 +22,7 @@
       slide.className = 'pae-slide inactive';
       slide.innerHTML =
         '<div class="pae-media">' +
-          '<img src="https://img.youtube.com/vi/' + data.ytId + '/maxresdefault.jpg" class="pae-thumb" alt="' + data.role + '">' +
+          '<video class="pae-thumb" preload="metadata" muted playsinline src="' + data.src + '#t=0.1"></video>' +
           '<div class="pae-gradient"></div>' +
           '<div class="pae-play-btn"><div class="pae-play-btn-inner">' +
             '<svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>' +
@@ -29,16 +32,16 @@
           '</div>' +
         '</div>';
 
-      (function(idx, slideNode, videoId) {
+      (function(idx, slideNode, videoSrc) {
         slideNode.addEventListener('click', function() {
           if (idx !== currentIdx) {
             currentIdx = idx;
             updateCarousel(true);
           } else {
-            loadIframe(slideNode, videoId);
+            loadVideo(slideNode, videoSrc);
           }
         });
-      })(index, slide, data.ytId);
+      })(index, slide, data.src);
 
       track.appendChild(slide);
 
@@ -50,20 +53,27 @@
       dotsEl.appendChild(dot);
     });
 
-    function loadIframe(slideNode, videoId) {
-      if (slideNode.querySelector('iframe')) return;
+    function loadVideo(slideNode, videoSrc) {
+      if (slideNode.querySelector('video.pae-player')) return;
       var media = slideNode.querySelector('.pae-media');
+      var thumb = slideNode.querySelector('.pae-thumb');
       var pb = slideNode.querySelector('.pae-play-btn');
       var gr = slideNode.querySelector('.pae-gradient');
       var tc = slideNode.querySelector('.pae-text-content');
+      if (thumb) thumb.style.display = 'none';
       if (pb) pb.style.display = 'none';
       if (gr) gr.style.display = 'none';
       if (tc) tc.style.display = 'none';
-      var iframe = document.createElement('iframe');
-      iframe.src = 'https://www.youtube-nocookie.com/embed/' + videoId + '?autoplay=1&rel=0&modestbranding=1&playsinline=1';
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-      iframe.allowFullscreen = true;
-      media.appendChild(iframe);
+      var video = document.createElement('video');
+      video.className = 'pae-player';
+      video.src = videoSrc;
+      video.controls = true;
+      video.autoplay = true;
+      video.muted = true;
+      video.playsInline = true;
+      video.loop = true;
+      media.appendChild(video);
+      video.play().catch(function() {});
     }
 
     function updateCarousel(autoPlay) {
@@ -77,19 +87,22 @@
         slide.classList.toggle('active', isActive);
         slide.classList.toggle('inactive', !isActive);
         if (!isActive) {
-          var iframe = slide.querySelector('iframe');
-          if (iframe) {
-            iframe.remove();
+          var video = slide.querySelector('video.pae-player');
+          if (video) {
+            video.pause();
+            video.remove();
+            var thumb = slide.querySelector('.pae-thumb');
             var pb = slide.querySelector('.pae-play-btn');
             var gr = slide.querySelector('.pae-gradient');
             var tc = slide.querySelector('.pae-text-content');
+            if (thumb) thumb.style.display = '';
             if (pb) pb.style.display = 'flex';
             if (gr) gr.style.display = 'block';
             if (tc) tc.style.display = 'block';
           }
         } else if (autoPlay) {
-          var ytId = shortsData[currentIdx].ytId;
-          setTimeout(function() { loadIframe(slide, ytId); }, 500);
+          var src = shortsData[currentIdx].src;
+          setTimeout(function() { loadVideo(slide, src); }, 500);
         }
       });
 
