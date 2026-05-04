@@ -5,13 +5,13 @@
     track.dataset.init = '1';
 
     var shortsData = [
-      { role: 'Art Recup',      ytId: 'Ie9KhCyvek8' },
-      { role: 'Ebénisterie',      ytId: '8KdkLhVvWl4' },
-      { role: 'Robotique',      ytId: 'MXAUKMyzt2w' }
+      { role: 'Art Recup',   ytId: 'Ie9KhCyvek8' },
+      { role: 'Ebénisterie', ytId: '8KdkLhVvWl4' },
+      { role: 'Robotique',   ytId: 'MXAUKMyzt2w' }
     ];
 
     var dotsEl     = document.getElementById('pae-dots');
-    var currentIdx = 4;
+    var currentIdx = Math.floor(shortsData.length / 2);
     var slideWidth = 304;
 
     shortsData.forEach(function(data, index) {
@@ -19,14 +19,13 @@
       slide.className = 'pae-slide inactive';
       slide.innerHTML =
         '<div class="pae-media">' +
-          '<img src="https://img.youtube.com/vi/' + data.ytId + '/maxresdefault.jpg" class="pae-thumb" alt="' + data.name + '">' +
+          '<img src="https://img.youtube.com/vi/' + data.ytId + '/maxresdefault.jpg" class="pae-thumb" alt="' + data.role + '">' +
           '<div class="pae-gradient"></div>' +
           '<div class="pae-play-btn"><div class="pae-play-btn-inner">' +
             '<svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>' +
           '</div></div>' +
           '<div class="pae-text-content">' +
             '<span class="pae-role-badge">' + data.role + '</span>' +
-            '<p class="pae-video-name">' + data.name + '</p>' +
           '</div>' +
         '</div>';
 
