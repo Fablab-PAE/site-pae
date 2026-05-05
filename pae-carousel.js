@@ -13,6 +13,28 @@
     ];
     // ──────────────────────────────────────────────────────────
 
+    // Inline style strings (applied via JS so they can't be stripped or out-cached by WP/Avada/CDN)
+    var THUMB_STYLE =
+      'position:absolute;' +
+      'inset:0;' +
+      'width:100%;' +
+      'height:100%;' +
+      'border:none;' +
+      'border-radius:16px;' +
+      'background:#000;' +
+      'object-fit:cover;' +     // thumbnail fills the slide
+      'opacity:0.85;';
+
+    var PLAYER_STYLE =
+      'position:absolute;' +
+      'inset:0;' +
+      'width:100%;' +
+      'height:100%;' +
+      'border:none;' +
+      'border-radius:16px;' +
+      'background:#000;' +
+      'object-fit:contain;';    // player shows the WHOLE video, no zoom
+
     var dotsEl     = document.getElementById('pae-dots');
     var currentIdx = Math.floor(shortsData.length / 2);
     var slideWidth = 304;
@@ -22,7 +44,7 @@
       slide.className = 'pae-slide inactive';
       slide.innerHTML =
         '<div class="pae-media">' +
-          '<video class="pae-thumb" preload="metadata" muted playsinline src="' + data.src + '#t=0.1"></video>' +
+          '<video class="pae-thumb" preload="metadata" muted playsinline src="' + data.src + '#t=0.1" style="' + THUMB_STYLE + '"></video>' +
           '<div class="pae-gradient"></div>' +
           '<div class="pae-play-btn"><div class="pae-play-btn-inner">' +
             '<svg fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>' +
@@ -64,6 +86,7 @@
       if (pb) pb.style.display = 'none';
       if (gr) gr.style.display = 'none';
       if (tc) tc.style.display = 'none';
+
       var video = document.createElement('video');
       video.className = 'pae-player';
       video.src = videoSrc;
@@ -72,6 +95,11 @@
       video.muted = true;
       video.playsInline = true;
       video.loop = true;
+
+      // Bulletproof inline styles — guarantees the video is positioned and contained
+      // inside the 280×500 slide even if external CSS hasn't loaded.
+      video.style.cssText = PLAYER_STYLE;
+
       media.appendChild(video);
       video.play().catch(function() {});
     }
